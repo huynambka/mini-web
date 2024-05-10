@@ -5,6 +5,8 @@ const app = express();
 app.use(express.json());
 
 const postRouter = require('./routes/posts');
+app.use(express.static('public'));
+
 app.use('/api/v1/post', postRouter);
 
 const start = async () => {

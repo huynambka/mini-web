@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Post List</h1>
+        <ul id="post-list">
+            <!-- Posts will be dynamically added here -->
+        </ul>
+    </div>
+
+    <script>
+        // Function to redirect to post.html with title and content as URL parameters
+        function redirectToPost(postId) {
+            window.location.href = `post.html?id=${postId}`;
+        }
+
+        // Fetch posts from API
+        fetch('/api/v1/post/')
+            .then(response => response.json())
+            .then(res => {
+                const postList = document.getElementById('post-list');
+                const posts = res.posts;
+                posts.forEach(post => {
+                    const li = document.createElement('li');
+                    li.textContent = post.title;
+                    li.addEventListener('click', () => redirectToPost(post.postId));
+                    postList.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error fetching posts:', error));
+    </script>
+</body>
+
+</html>

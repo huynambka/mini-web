@@ -11,7 +11,7 @@ const createPost = async (req, res) => {
         if (lastPost) {
             id = lastPost.postId + 1;
         }
-        const post = await Post.create({ id, title, content });
+        const post = await Post.create({ postId: id, title, content });
         res.status(StatusCodes.CREATED).json({ success: true, post });
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -23,8 +23,8 @@ const createPost = async (req, res) => {
 const getPost = async (req, res) => {
     try {
         const id = req.params.id;
-        const post = await Post.find({ postId: id });
-        if (post.length == 0) {
+        const post = await Post.findOne({ postId: id });
+        if (!post) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 error: `Post with id ${id} not found`,
             });
@@ -36,8 +36,12 @@ const getPost = async (req, res) => {
         });
     }
 };
-
+const getPublicPost = async (req, res) => {
+    const posts = await Post.find({ public: true }).select('postId title');
+    res.status(StatusCodes.OK).json({ success: true, posts });
+};
 module.exports = {
     createPost,
     getPost,
+    getPublicPost,
 };
