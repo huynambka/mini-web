@@ -1,9 +1,11 @@
 const router = require('express').Router();
+const passport = require('../middlewares/passport');
+const passportJWT = passport.authenticate('jwt', { session: false }, null);
 
 const { createPost, getPost, getPublicPost } = require('../controllers/posts');
 
-router.post('/create', createPost);
+router.post('/create', passportJWT, createPost);
 router.get('/:id', getPost);
-router.get('/', getPublicPost);
+router.get('/', passportJWT, getPublicPost);
 
 module.exports = router;

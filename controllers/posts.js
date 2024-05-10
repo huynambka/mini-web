@@ -1,9 +1,10 @@
-const Post = require('../models/posts');
+const Post = require('../models/post');
 
 const { StatusCodes } = require('http-status-codes');
 
 const createPost = async (req, res) => {
     try {
+        const username = req.user.username;
         const { title, content, public } = req.body;
         // Auto increment postId
         const lastPost = await Post.findOne().sort({ postId: -1 });
@@ -11,7 +12,13 @@ const createPost = async (req, res) => {
         if (lastPost) {
             id = lastPost.postId + 1;
         }
-        const post = await Post.create({ postId: id, title, content, public });
+        const post = await Post.create({
+            postId: id,
+            title,
+            content,
+            author: username,
+            public,
+        });
         res.status(StatusCodes.CREATED).json({ success: true, post });
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -37,7 +44,10 @@ const getPost = async (req, res) => {
     }
 };
 const getPublicPost = async (req, res) => {
-    const posts = await Post.find({ public: true })
+    const username = req.user.username;
+    const posts = await Post.find({
+        $or: [{ public: true }, { author: username }],
+    })
         .select('postId title')
         .sort({ createdAt: -1 });
     res.status(StatusCodes.OK).json({ success: true, posts });

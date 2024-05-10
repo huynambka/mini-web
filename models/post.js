@@ -13,11 +13,11 @@ const PostSchema = new mongoose.Schema(
             trim: true,
             maxlength: [100, 'A post title must be less than 100 characters'],
         },
-        // author: {
-        //     type: mongoose.Schema.ObjectId,
-        //     ref: 'User',
-        //     required: [true, 'A post must has an author'],
-        // },
+        author: {
+            type: String,
+            ref: 'User',
+            required: [true, 'A post must has an author'],
+        },
         content: {
             type: String,
             required: [true, 'A post must has a content'],

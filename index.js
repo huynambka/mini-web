@@ -4,11 +4,15 @@ const app = express();
 
 app.use(express.json());
 
+const passport = require('./middlewares/passport');
+app.use(passport.initialize());
+
 const postRouter = require('./routes/posts');
+const authRoutes = require('./routes/auth');
 app.use(express.static('public'));
 
 app.use('/api/v1/post', postRouter);
-
+app.use('/api/v1/auth', authRoutes);
 const start = async () => {
     try {
         // Connect DB
