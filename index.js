@@ -4,6 +4,9 @@ const app = express();
 
 app.use(express.json());
 
+const postRouter = require('./routes/posts');
+app.use('/api/v1/post', postRouter);
+
 const start = async () => {
     try {
         // Connect DB
