@@ -40,15 +40,36 @@
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             cursor: pointer;
         }
+
+        .btn {
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            text-align: center;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <h1>Post List</h1>
+        <button class="btn" onclick="redirectToCreatePost()">Create Post</button>
         <ul id="post-list">
             <!-- Posts will be dynamically added here -->
         </ul>
+
     </div>
 
     <script>
@@ -56,7 +77,9 @@
         function redirectToPost(postId) {
             window.location.href = `post.html?id=${postId}`;
         }
-
+        function redirectToCreatePost() {
+            window.location.href = 'create-post.html';
+        }
         // Fetch posts from API
         fetch('/api/v1/post/')
             .then(response => response.json())

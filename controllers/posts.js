@@ -4,14 +4,14 @@ const { StatusCodes } = require('http-status-codes');
 
 const createPost = async (req, res) => {
     try {
-        const { title, content } = req.body;
+        const { title, content, public } = req.body;
         // Auto increment postId
         const lastPost = await Post.findOne().sort({ postId: -1 });
         let id = 1;
         if (lastPost) {
             id = lastPost.postId + 1;
         }
-        const post = await Post.create({ postId: id, title, content });
+        const post = await Post.create({ postId: id, title, content, public });
         res.status(StatusCodes.CREATED).json({ success: true, post });
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -37,7 +37,9 @@ const getPost = async (req, res) => {
     }
 };
 const getPublicPost = async (req, res) => {
-    const posts = await Post.find({ public: true }).select('postId title');
+    const posts = await Post.find({ public: true })
+        .select('postId title')
+        .sort({ createdAt: -1 });
     res.status(StatusCodes.OK).json({ success: true, posts });
 };
 module.exports = {
