@@ -36,12 +36,34 @@
         .post-content {
             white-space: pre-line;
         }
+
+        .btn {
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            text-align: center;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <h1>Post</h1>
+        <a href="/">
+            <button class="btn">Home</button>
+        </a>
         <div id="post-details">
             <!-- Post details will be dynamically added here -->
         </div>
@@ -55,13 +77,19 @@
             const postId = urlParams.get('id');
             const postDetails = document.getElementById('post-details');
 
-            fetch(`/api/v1/post/${postId}`)
+            fetch(`/api/v1/post/${postId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + document.cookie.split('=')[1]
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     const post = data.post;
                     const titleElement = document.createElement('div');
                     titleElement.classList.add('post-title');
-                    titleElement.innerHTML = post.title;
+                    titleElement.innerHTML = `${post.title} by ${post.author}`;
 
                     const contentElement = document.createElement('div');
                     contentElement.classList.add('post-content');

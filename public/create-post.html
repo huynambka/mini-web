@@ -147,10 +147,9 @@
         function createPost() {
             const title = document.getElementById('title').value;
             const content = document.getElementById('content').value;
-            const privateChecker = document.getElementById('private').value;
+            const privateChecker = document.getElementById('private').checked;
             let public = true;
-            console.log(privateChecker);
-            if (privateChecker === 'on') {
+            if (privateChecker) {
                 public = false;
             }
 

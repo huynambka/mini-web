@@ -41,9 +41,28 @@ Sau đó người dùng có thể đăng bài, bài đăng có thể là **publi
 
     Đoạn code trên không kiểm tra xem author của bài đăng có đúng là người đang truy cập hay không.
 
+    PoC: [here](./PoC/BrokenAccessControl.md)
+
 2. Đề xuất fix
 
     Thêm đoạn code kiểm tra xem user truy cập tới bài đăng private có phải là author của bài đăng đó hay không.
+
+    ```jsx
+    [...]
+    const username = req.user.username;
+    const post = await Post.findOne({ postId: id});
+    if (!post) {
+        return res.status(StatusCodes.NOT_FOUND).json({
+            error: `Post with id ${id} not found`,
+        });
+    }
+    if (post.author !== username) {
+        return res.status(StatusCodes.FORBIDDEN).json({
+            error: `Something went wrong`,
+        });
+    }
+    [...]
+    ```
 
 3. Refferences
     - [PortSwigger](https://portswigger.net/web-security/access-control)
