@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon --inspect ."
+        "start": "node index.js"
     },
     "author": "",
     "license": "ISC",
@@ -18,8 +18,5 @@
         "mongoose": "^8.3.4",
         "passport": "^0.7.0",
         "passport-jwt": "^4.0.1"
-    },
-    "devDependencies": {
-        "nodemon": "^3.1.0"
     }
 }
