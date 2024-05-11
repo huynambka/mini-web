@@ -121,7 +121,9 @@
                     password
                 })
             })
-                .then(res => res.json())
+                .then(res => {
+                    res.json()
+                })
                 .then(data => {
                     if (data.success == true) {
                         alert("Register success! Please login!")
