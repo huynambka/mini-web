@@ -49,20 +49,21 @@ Sau đó người dùng có thể đăng bài, bài đăng có thể là **publi
 
     ```jsx
     [...]
+    const id = req.params.id;
     const username = req.user.username;
-    const post = await Post.findOne({ postId: id});
-    if (!post) {
+    const post = await Post.findOne({ postId: id });
+    if (!post || (!post.public && post.author !== username)) {
         return res.status(StatusCodes.NOT_FOUND).json({
+            success: false,
             error: `Post with id ${id} not found`,
-        });
-    }
-    if (post.author !== username) {
-        return res.status(StatusCodes.FORBIDDEN).json({
-            error: `Something went wrong`,
         });
     }
     [...]
     ```
+
+    <img src="./PoC/image-4.png" width=600>
+
+    Sau khi thêm đoạn code trên, kẻ tấn công sẽ không thể truy cập vào bài đăng private của người khác. Khi truy cập vào bài đăng private của người khác, server sẽ trả về lỗi `Post not found`.
 
 3. Refferences
     - [PortSwigger](https://portswigger.net/web-security/access-control)
@@ -130,6 +131,9 @@ Sau đó người dùng có thể đăng bài, bài đăng có thể là **publi
     - Validate user input, không cho điền các HTML tag.
     - Encode user input ( ví dụ ‘<’ thành ‘&lt;’ ).
     - Sử dụng `textContent()`, `innerText` thay vì `innerHTML`.
+    - Sử dụng Content Security Policy (CSP) để ngăn chặn việc thực thi script từ các domain khác.
+    <img src="./PoC/image-5.png" width=600>
+
 3. Refferences
     - [PortSwigger](https://portswigger.net/web-security/cross-site-scripting)
 

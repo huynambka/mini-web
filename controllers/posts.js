@@ -30,9 +30,11 @@ const createPost = async (req, res) => {
 const getPost = async (req, res) => {
     try {
         const id = req.params.id;
+        const username = req.user.username;
         const post = await Post.findOne({ postId: id });
-        if (!post) {
+        if (!post || (!post.public && post.author !== username)) {
             return res.status(StatusCodes.NOT_FOUND).json({
+                success: false,
                 error: `Post with id ${id} not found`,
             });
         }

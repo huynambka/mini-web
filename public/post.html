@@ -86,17 +86,22 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    const post = data.post;
-                    const titleElement = document.createElement('div');
-                    titleElement.classList.add('post-title');
-                    titleElement.innerHTML = `${post.title} by ${post.author}`;
+                    if (data.success == true) {
+                        const post = data.post;
+                        const titleElement = document.createElement('div');
+                        titleElement.classList.add('post-title');
+                        titleElement.innerText = `${post.title} by ${post.author}`;
 
-                    const contentElement = document.createElement('div');
-                    contentElement.classList.add('post-content');
-                    contentElement.innerHTML = post.content;
+                        const contentElement = document.createElement('div');
+                        contentElement.classList.add('post-content');
+                        contentElement.innerText = post.content;
 
-                    postDetails.appendChild(titleElement);
-                    postDetails.appendChild(contentElement);
+                        postDetails.appendChild(titleElement);
+                        postDetails.appendChild(contentElement);
+                    } else {
+                        alert('Post not found')
+                        window.location.href('/')
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);
